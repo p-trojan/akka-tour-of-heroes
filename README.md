@@ -1,30 +1,11 @@
-# Sample Akka HTTP server
+# Tour of Heroes - Akka HTTP server
 
-This is a sample Akka HTTP endpoint keeping an in-memory database of users that can be created and listed.
+This is a sample project using Akka for the backend (https://github.com/akka/akka-http-quickstart-scala.g8)
+ 
+The domain and REST API is based on Angular tutorial (https://angular.io/tutorial/tour-of-heroes), specifically pt6 of it, with few tweaks, 
+just to make it work on localhost.
 
-Sources in the sample:
+Main purpose of the project is to learn Scala.
 
-* `QuickstartApp.scala` -- contains the main method which bootstraps the application
-* `UserRoutes.scala` -- Akka HTTP `routes` defining exposed endpoints
-* `UserRegistry.scala` -- the actor which handles the registration requests
-* `JsonFormats.scala` -- converts the JSON data from requests into Scala types and from Scala types into JSON responses
 
-## Interacting with the sample
-
-After starting the sample with `sbt run` the following requests can be made:
-
-List all users:
-
-    curl http://localhost:8080/users
-
-Create a user:
-
-    curl -XPOST http://localhost:8080/users -d '{"name": "Liselott", "age": 32, "countryOfResidence": "Norway"}' -H "Content-Type:application/json"
-
-Get the details of one user:
-
-    curl http://localhost:8080/users/Liselott
-
-Delete a user:
-
-    curl -XDELETE http://localhost:8080/users/Liselott
+To run this project Docker is also used with MongoDB container.
