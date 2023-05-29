@@ -58,7 +58,7 @@ object HeroPersistence {
     source.grouped(2).runWith(MongoSink.insertMany[Hero](heroesCollection))
   }
 
-  private def insertHero(hero: Hero): Unit = {
+  def insertHero(hero: Hero): Unit = {
     val source = Source.single(hero)
     source.runWith(MongoSink.insertOne(heroesCollection))
   }

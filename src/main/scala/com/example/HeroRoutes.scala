@@ -26,14 +26,17 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
   def getHero(id: Int): Future[GetHeroResponse] =
     heroRegistry.ask(GetHero(id, _))
 
-  def createHero(hero: Hero): Future[HeroActionPerformed] =
+  def createHero(hero: Hero): Future[HeroActionPerformed] = {
     heroRegistry.ask(CreateHero(hero, _))
+  }
 
   def updateHero(hero: Hero): Future[HeroActionPerformed] =
     heroRegistry.ask(UpdateHero(hero, _))
 
-  def deleteHero(id: Int): Future[HeroActionPerformed] =
+  def deleteHero(id: Int): Future[HeroActionPerformed] = {
     heroRegistry.ask(DeleteHero(id, _))
+  }
+
 
   val heroRoutes: Route = handleRejections(corsRejectionHandler) {
     cors() {
@@ -46,14 +49,18 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
               },
               post {
                 entity(as[Hero]) { hero =>
+                system.log.info(s"POST method - create hero: $hero")
                   onSuccess(createHero(hero)) { performed =>
+                    HeroPersistence.insertHero(hero)
                     complete((StatusCodes.Created, performed))
                   }
                 }
               },
               put {
                 entity(as[Hero]) { hero =>
+                  system.log.info(s"PUT method - update hero: $hero")
                   onSuccess(updateHero(hero)) { performed =>
+                    HeroPersistence.updateHero(hero)
                     complete((StatusCodes.OK, performed))
                   }
                 }
@@ -70,7 +77,9 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
                 }
               },
               delete {
+                system.log.info(s"DELETE method - update hero: $id")
                 onSuccess(deleteHero(id)) { performed =>
+                  HeroPersistence.deleteHero(id)
                   complete((StatusCodes.OK, performed))
                 }
               }
