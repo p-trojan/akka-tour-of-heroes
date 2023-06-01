@@ -11,4 +11,4 @@ Main purpose of the project is to learn Scala.
 To run this project Docker is also used with MongoDB container.
 
 
-### Frontend app: https://github.com/p-trojan/angular-tour-of-heroes
+#### Frontend app: https://github.com/p-trojan/angular-tour-of-heroes

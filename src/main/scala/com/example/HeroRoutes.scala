@@ -17,7 +17,6 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   import JsonFormats._
 
-  //  private implicit val timeout: Timeout = Timeout.create(system.settings.config.getDuration("my-app.routes.ask-timeout"))
   private implicit val timeout: Timeout = Timeout.create(java.time.Duration.ofSeconds(5))
 
   def getHeroes(): Future[Heroes] =
@@ -37,7 +36,6 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
     heroRegistry.ask(DeleteHero(id, _))
   }
 
-
   val heroRoutes: Route = handleRejections(corsRejectionHandler) {
     cors() {
       pathPrefix("api") {
@@ -49,7 +47,7 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
               },
               post {
                 entity(as[Hero]) { hero =>
-                system.log.info(s"POST method - create hero: $hero")
+                  system.log.info(s"POST method - create hero: $hero")
                   onSuccess(createHero(hero)) { performed =>
                     HeroPersistence.insertHero(hero)
                     complete((StatusCodes.Created, performed))
@@ -77,16 +75,16 @@ class HeroRoutes(heroRegistry: ActorRef[HeroRegistry.Command])(implicit val syst
                 }
               },
               delete {
-                system.log.info(s"DELETE method - update hero: $id")
+                system.log.info(s"DELETE method - remove hero: $id")
                 onSuccess(deleteHero(id)) { performed =>
                   HeroPersistence.deleteHero(id)
                   complete((StatusCodes.OK, performed))
                 }
               }
             )
-          })
-        }
-
+          }
+        )
       }
     }
+  }
 }
