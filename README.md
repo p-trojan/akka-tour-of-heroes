@@ -12,3 +12,5 @@ To run this project Docker is also used with MongoDB container.
 
 
 #### Frontend app: https://github.com/p-trojan/angular-tour-of-heroes
+
+#### Backend in SparkJava: https://github.com/p-trojan/tour-of-heroes-spark-java
